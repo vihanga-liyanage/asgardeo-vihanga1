@@ -1,36 +1,28 @@
 import ballerina/http;
+import ballerina/log;
 
-type RiskResponse record {
-     boolean hasRisk;
-};
+service /tokenService on new http:Listener(8080) {
 
-type RiskRequest record {
-     string ip;
-};
+    resource function post processToken(http:Caller caller, http:Request req) returns error? {
+        // Parse the JSON request payload
+        json requestBody = check req.getJsonPayload();
+        
+        // Log the received request
+        log:printInfo("Received request: " + requestBody.toJsonString());
 
-type ipGeolocationResp record {
-     string ip;
-     string country_code2;
-};
-
-final string geoApiKey = "9220f0511ace4b29882e08ccdefc2b4d";
-
-service / on new http:Listener(8090) {
-    resource function post addClaim(@http:Payload req) returns any {
-
-        any resp = {
+        // Construct the response
+        json responseBody = {
             "actionStatus": "SUCCESS",
             "operations": [
                 {
-                "op": "add",
-                "path": "/accessToken/claims/-",
-                "value": {
-                    "name": "customSID",
-                    "value": "12345"
-                }
+                    "op": "replace",
+                    "path": "/accessToken/claims/customAttribute",
+                    "value": ["foo", "bar"]
                 }
             ]
         };
-        return resp;
+
+        // Send the response
+        check caller->respond(responseBody);
     }
 }
