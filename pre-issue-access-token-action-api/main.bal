@@ -1,6 +1,8 @@
 import ballerina/http;
 import ballerina/log;
 
+configurable string CLIENT_ID = ?;
+
 service /tokenService on new http:Listener(8080) {
 
     resource function post processToken(http:Caller caller, http:Request req) returns error? {
@@ -17,7 +19,7 @@ service /tokenService on new http:Listener(8080) {
         json responseBody = { "actionStatus": "SUCCESS" };
 
         // If clientId matches, include allowedOperations
-        if clientId is string && clientId == "pChqfVSuiZpLBneFG39hP1LTfOMa" {
+        if clientId is string && clientId == CLIENT_ID {
             responseBody = {
                 "actionStatus": "SUCCESS",
                 "operations": [
