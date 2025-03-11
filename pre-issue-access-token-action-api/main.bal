@@ -27,7 +27,7 @@ service /tokenService on new http:Listener(8080) {
                         "op": "add",
                         "path": "/accessToken/claims/-",
                         "value": {
-                            "name": "entity_id",
+                            "name": "roles",
                             "value": [
                                 "SYSTEM_ONBOARDING_BACKEND",
                                 "SYSTEM_EVENTS_PUBLISHER",
@@ -40,7 +40,7 @@ service /tokenService on new http:Listener(8080) {
                         "op": "add",
                         "path": "/accessToken/claims/-",
                         "value": {
-                            "name": "roles",
+                            "name": "entity_id",
                             "value": "76e84daa-c954-4c6a-8f7f-09758c078669"
                         }
                     }
